@@ -110,22 +110,27 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.status === 200) {
+            function setCookie(name, value, days) {
+              var expires = "";
+              if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                expires = "; expires=" + date.toUTCString();
+              }
+              document.cookie =
+                name + "=" + (value || "") + expires + "; path=/";
+            }
             // set cookie with expiry 1 hour and redirect to home page
-            let expires = "";
-            let date = new Date();
-            date.setTime(date.getTime() + 1 * 24 * 60 * 60 * 1000);
-            expires = "; expires=" + date.toUTCString();
-            document.cookie = "accessToken" + "=" + data.accessToken + expires + "; path=/";
-            document.cookie = "role" + "=" + data.role + expires + "; path=/";
+            setCookie("accessToken", data.accessToken, 1);
+            setCookie("role", data.role, 1);
+            setCookie("username", data.username, 1);
             alert("login successful");
 
             // check if user is admin or not
             if (data.role === "librarian") {
-              window.location.href = "/";
-              return;
+              window.location.href = "../index.html";
             } else if (data.role === "member") {
               window.location.href = "./member.html";
-              return;
             }
           } else {
             alert("Invalid username or password");

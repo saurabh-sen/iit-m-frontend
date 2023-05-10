@@ -1,4 +1,21 @@
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 const addbook = () => {
+  let accessToken = getCookie("accessToken");
   let bookId = document.getElementById("book-id").value;
   let bookName = document.getElementById("book-name").value;
   // validate the input
@@ -31,13 +48,14 @@ const addbook = () => {
 
 const updateBook = (id, data) => {
   const bookId = document.getElementById("update-book-id");
+  const bookUniqueId = document.getElementById("book-unique-id");
   const bookName = document.getElementById("update-book-name");
   const bookStatus = document.getElementById("update-book-status");
 
   // filter the book with id
   const book = data.filter((book) => book._id === id);
-  console.log(book);
   bookId.value = book[0].bookId;
+  bookUniqueId.value = book[0]._id;
   bookName.value = book[0].bookName;
   if (book[0].bookStatus === "AVAILABLE") {
     bookStatus.checked = true;
@@ -47,14 +65,18 @@ const updateBook = (id, data) => {
 };
 
 const updateSpecificBook = () => {
+  let accessToken = getCookie("accessToken");
   const bookId = document.getElementById("update-book-id").value;
+  const bookUniqueId = document.getElementById("book-unique-id").value;
   const bookName = document.getElementById("update-book-name").value;
-  const bookStatus = document.getElementById("update-book-status").value;
+  const bookStatus = document.getElementById("update-book-status").checked;
   // validate the input
   if (!bookId || !bookName) {
     alert("Please enter all the fields");
     return;
   }
+
+  // console.log(bookId, bookUniqueId, bookName, bookStatus)
   // make a post request to server with access token and book id
   fetch(`http://localhost:3000/updatebook`, {
     method: "PUT",
@@ -63,6 +85,7 @@ const updateSpecificBook = () => {
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
+      bookUniqueId,
       bookId,
       bookName,
       bookStatus,
@@ -74,12 +97,13 @@ const updateSpecificBook = () => {
         alert("Book updated successfully");
         window.location.reload();
       } else {
-        alert("Something went wrong");
+        alert("Something went wrong "+ data.message);
       }
     });
 };
 
 const deleteBook = (id, data) => {
+  let accessToken = getCookie("accessToken");
   let book = data.filter((book) => book._id === id)[0];
   let daleteOrNot = confirm(
     `Are you sure you want to delete this book named: ${book.bookName}?`
@@ -109,6 +133,7 @@ const deleteBook = (id, data) => {
 };
 
 const addmember = () => {
+  let accessToken = getCookie("accessToken");
   let membersUsername = document.getElementById("member-name").value;
   let membersPassword = document.getElementById("member-password").value;
   // validate the input
@@ -152,6 +177,7 @@ const updateMembers = (id, data) => {
 };
 
 const updateSpecificMember = () => {
+  let accessToken = getCookie("accessToken");
   const membersUsername = document.getElementById(
     "update-members-username"
   ).value;
@@ -188,8 +214,9 @@ const updateSpecificMember = () => {
 };
 
 const deleteMembers = (id, data) => {
+  let accessToken = getCookie("accessToken");
   let member = data.filter((member) => member._id === id)[0];
-  console.log(member);
+  // console.log(member);
   let daleteOrNot = confirm(
     `Are you sure you want to delete this member named: ${member.username}?`
   );

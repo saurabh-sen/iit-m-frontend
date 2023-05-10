@@ -20,20 +20,34 @@
     ></script>
     <script>
       // Check if the user is logged in
-      function checkLogin() {
-        // get cookie named accessToken and role value
-        let accessToken = document.cookie.split(";")[1].split("=")[1];
-        let role = document.cookie.split(";")[0].split("=")[1];
-        // console.log(accessToken, role)
-        if (!accessToken || !role) {
-          // Redirect to the login page
-          window.location.href = "./pages/login.html";
-        } else if (role !== "librarian") {
-          // Redirect to the login page
-          window.location.href = "./pages/login.html";
+      function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(";");
+        for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == " ") {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
         }
+        return "";
       }
-      checkLogin();
+
+      if (
+        getCookie("role") !== "librarian" ||
+        getCookie("accessToken") === ""
+      ) {
+        // alert(
+        //   "role " +
+        //     getCookie("role") +
+        //     " accessToken " +
+        //     getCookie("accessToken")
+        // );
+        window.location.href = "./pages/signup.html";
+      }
     </script>
   </head>
   <body>
@@ -95,6 +109,11 @@
                       >Book Name:</label
                     >
                     <input type="text" class="form-control" id="book-name" />
+                    <input
+                      type="text"
+                      class="form-control invisible"
+                      id="book-unique-id"
+                    />
                   </div>
                 </form>
               </div>
@@ -383,14 +402,18 @@
   </body>
   <script>
     // get the access token and role from cookie
-    let accessToken = document.cookie.split(";")[1].split("=")[1];
-    let role = document.cookie.split(";")[0].split("=")[1];
-    (() => {
+    if (getCookie("role") !== "librarian" || getCookie("accessToken") === "") {
+      // alert(
+      //   "role " + getCookie("role") + " accessToken " + getCookie("accessToken")
+      // );
+      window.location.href = "./pages/login.html";
+    }
+    (() => {      
       fetch("http://localhost:3000/librarian", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${getCookie("accessToken")}`,
         },
       })
         .then((res) => res.json())

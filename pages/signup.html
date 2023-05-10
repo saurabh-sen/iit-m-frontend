@@ -113,7 +113,7 @@
         return;
       }
 
-      // make post req to server localhost:3000/signup
+      // make post req to server
       const data = { username, password, role };
       fetch('http://localhost:3000/signup', {
         method: 'POST',
@@ -129,7 +129,7 @@
             alert('signup successful');
             window.location.href = './login.html';
           } else {
-            alert(data.error);
+            alert(data.message);
           }
         });
 
