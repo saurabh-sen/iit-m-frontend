@@ -24,7 +24,7 @@ const addbook = () => {
     return;
   }
   // make a post request to server with access token
-  fetch("http://localhost:3000/addbook", {
+  fetch("https://iit-m-backend.onrender.com/addbook", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const updateSpecificBook = () => {
 
   // console.log(bookId, bookUniqueId, bookName, bookStatus)
   // make a post request to server with access token and book id
-  fetch(`http://localhost:3000/updatebook`, {
+  fetch(`https://iit-m-backend.onrender.com/updatebook`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const deleteBook = (id, data) => {
     `Are you sure you want to delete this book named: ${book.bookName}?`
   );
   if (daleteOrNot) {
-    fetch(`http://localhost:3000/deletebook`, {
+    fetch(`https://iit-m-backend.onrender.com/deletebook`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const addmember = () => {
     return;
   }
   // make a post request to server with access token
-  fetch("http://localhost:3000/addmember", {
+  fetch("https://iit-m-backend.onrender.com/addmember", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -190,7 +190,7 @@ const updateSpecificMember = () => {
     alert("Please enter all the fields");
     return;
   }
-  fetch(`http://localhost:3000/updatemembers`, {
+  fetch(`https://iit-m-backend.onrender.com/updatemembers`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -221,7 +221,7 @@ const deleteMembers = (id, data) => {
     `Are you sure you want to delete this member named: ${member.username}?`
   );
   if (daleteOrNot) {
-    fetch(`http://localhost:3000/deletemember`, {
+    fetch(`https://iit-m-backend.onrender.com/deletemember`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

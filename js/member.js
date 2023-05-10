@@ -25,7 +25,7 @@ const deleteAccount = (membersId) => {
   // console.log(membersId);
   if (confirm(`Are you sure you want to delete this account?`)) {
     let accessToken = getCookie("accessToken");
-    fetch(`http://localhost:3000/deletemember`, {
+    fetch(`https://iit-m-backend.onrender.com/deletemember`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const borrowBook = (id, data) => {
     `Are you sure you want to borrow this book named: ${book.bookName}?`
   );
   if (borrowOrNot) {
-    fetch(`http://localhost:3000/borrowBook`, {
+    fetch(`https://iit-m-backend.onrender.com/borrowBook`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const returnBook = (id, data) => {
     `Are you sure you want to return this book named: ${book.bookName}?`
   );
   if (returnOrNot) {
-    fetch(`http://localhost:3000/returnBook`, {
+    fetch(`https://iit-m-backend.onrender.com/returnBook`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
